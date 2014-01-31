@@ -23,9 +23,7 @@
                 }
             }
             
-            self.on('onModalCalled', function () {
-                o.events.onModalCalled.call(self);
-            });
+            self.on('onModalCalled', o.events.onModalCalled);
             self.trigger('onModalCalled');
             
             shroud = $('<div />').attr(o.shroud_attrs).css(o.shroud_css);
@@ -59,13 +57,9 @@
                 });
             });
             
-            self.on('onModalOpen', function () {
-                o.events.onModalOpen.call(self);
-            });
+            self.on('onModalOpen', o.events.onModalOpen);
             
-            self.on('onModalClosed', function () {
-                o.events.onModalClosed.call(self);
-            });
+            self.on('onModalClosed', o.events.onModalClosed);
             
             $(o.close_selector).click(function () {
                 self.trigger('close');
