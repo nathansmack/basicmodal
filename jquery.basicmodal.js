@@ -1,7 +1,3 @@
-/* jquery.basicmodal - v1.0 - 2014-01-31
- * https://github.com/joshua-jones-software/basicmodal
- * Copyright (c) 2014 Joshua Jones; Licensed MIT 
- */
 ;(function ($) {
     $.fn.BasicModal = function (options) {
 
@@ -23,12 +19,14 @@
                 }
             }
             
-            self.on('onModalCalled', o.events.onModalCalled);
-            self.trigger('onModalCalled');
+            self.on('basic_modal_called', function () {
+                o.events.basic_modal_called.call(self);
+            });
+            self.trigger('basic_modal_called');
             
-            shroud = $('<div />').attr(o.shroud_attrs).css(o.shroud_css);
+            shroud = $('<div>').attr(o.shroud_attrs).css(o.shroud_css);
             
-            if (o.show_shroud) {
+            if (o.shroud_show) {
                 shroud.appendTo('body');
             }
 
@@ -37,11 +35,10 @@
                 'margin-left' :  - (self.outerWidth() / 2) + 'px',
                 'top' : 50 + '%',
                 'margin-top' :  - (self.outerHeight() / 2) + 'px'
-
             });
             self.css(o.modal_css);
             
-            self.on('close', function () {
+            self.on('basic_modal_close', function () {
                 self.stop().fadeOut('fast', function () {
                     $(this).css({
                         'display': 'none'
@@ -49,31 +46,35 @@
                 });
                 shroud.stop().fadeOut('fast', function () {
                     shroud.remove();
-                    self.off('close');
-                    self.off('onModalCalled');
-                    self.off('onModalOpen');
-                    self.trigger('onModalClosed');
-                    self.off('onModalClosed');
+                    self.off('basic_modal_close');
+                    self.off('basic_modal_called');
+                    self.off('basic_modal_open');
+                    self.trigger('basic_modal_closed');
+                    self.off('basic_modal_closed');
                 });
             });
             
-            self.on('onModalOpen', o.events.onModalOpen);
+            self.on('basic_modal_open', function () {
+                o.events.basic_modal_open.call(self);
+            });
             
-            self.on('onModalClosed', o.events.onModalClosed);
+            self.on('basic_modal_closed', function () {
+                o.events.basic_modal_closed.call(self);
+            });
             
-            $(o.close_selector).click(function () {
-                self.trigger('close');
+            $(o.modal_close_selector).click(function () {
+                self.trigger('basic_modal_close');
             });
             
             shroud.stop().fadeTo('fast', o.shroud_max_opacity, function () {});
             
             self.stop().fadeTo('fast', 1, function () {
-                self.trigger('onModalOpen');
+                self.trigger('basic_modal_open');
             });
             
             if (o.shroud_close_on !== null) {
                 shroud.on(o.shroud_close_on, function () {
-                    self.trigger('close');
+                    self.trigger('basic_modal_close');
                 });
             }
         });
@@ -82,15 +83,15 @@
     $.BasicModal = {};
 
     $.BasicModal.defaults = {
-        shroud_attrs: { id: 'shroud' },
+        shroud_attrs: { id: 'basic-modal-shroud' },
         modal_css: {
             'display': 'block',
             'position': 'fixed',
-            'opacity': 0,
+            'opacity': 0.1,
             'z-index': 9999
         },
         shroud_css: {
-            'opacity': 0,
+            'opacity': 0.1,
             'width': 100 + '%',
             'height': 100 + '%',
             'z-index': 9998,
@@ -101,12 +102,12 @@
         },
         shroud_max_opacity: 0.5,
         shroud_close_on: 'click',
-        show_shroud: true,
-        close_selector: '.basic-modal-close',
+        shroud_show: true,
+        modal_close_selector: '.basic-modal-close',
         events: {
-            onModalCalled: function () {},
-            onModalOpen: function () {},
-            onModalClosed: function () {}
+            basic_modal_called: function () {},
+            basic_modal_open: function () {},
+            basic_modal_closed: function () {}
         }
     };
 }(jQuery));
