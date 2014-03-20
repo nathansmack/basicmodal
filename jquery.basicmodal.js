@@ -1,3 +1,7 @@
+/* jquery.basicmodal - v1.1 - 2014-01-31
+ * https://github.com/joshua-jones-software/basicmodal
+ * Copyright (c) 2014 Joshua Jones; Licensed MIT 
+ */
 ;(function ($) {
     $.fn.BasicModal = function (options) {
 
